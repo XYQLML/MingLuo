@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Mar 17 14:28:12 2019
+
+@author: Administrator
+"""
+
+#没有考虑领域并且只有两个输出神经元(W[1],W[0])
+#用极坐标，距离的长短可以用相差角度的大小来描述
+#x中每一行中单个元素的值平方相加为1，例:0.5*0.5+0.8660*0.8660=1
+#样本有4个，学习率0.1，学习次数100
+
+import numpy as np
+
+x = np.array([[0.5,0.8660], [0.9165, -0.4], [0.3, -0.9539], [0.2, 0.9798]])
+
+x_radian = np.arctan2(x[:, 1], x[:, 0])#返回给定的 X 及 Y 坐标值的反正切值;X[:, 1]=y;X[:, 0]=x
+itsnum = 100                       # itsnum=1000时，结果相同
+learning_rate = 0.1
+W = np.array([0, -np.pi/2])
+
+for i in range(itsnum):
+    for X in x_radian:
+        d = np.abs(X - W)             #求绝对值
+        if d[0] < d[1]:
+            W[0] += learning_rate * (X - W[0])
+        else:
+            W[1] += learning_rate * (X - W[1])
+        print('itsnum{%d}' % i)                #  %d --- dec 十进制
+        print("W[0] = ", W[0]*180/np.pi)
+        print("W[1] = ", W[1]*180/np.pi)
